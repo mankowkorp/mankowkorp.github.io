@@ -127,6 +127,9 @@ textarea { width:100%; font:inherit; padding:10px; border-radius:7px;
   border-top:none; border-radius:0 8px 8px 8px; padding:12px 14px;
   box-shadow:0 3px 14px rgba(0,0,0,.28); }
 .fb p { margin:0 0 8px; font-size:13px; color:var(--dim); }
+.gmailrow { margin:10px 0 0; flex-basis:100%; display:flex; gap:8px;
+  align-items:center; flex-wrap:wrap; }
+.gmailrow span { color:var(--dim); font-size:13px; }
 .rankfb { margin:10px 0 0; flex-basis:100%; }
 .rankfb > summary { color:var(--dim); font-size:13px; cursor:pointer;
   display:inline-block; }
@@ -137,6 +140,12 @@ textarea { width:100%; font:inherit; padding:10px; border-radius:7px;
   border-radius:8px; padding:9px 12px; margin:10px 0 0; color:var(--good);
   font-size:14px; }
 .unread { color:var(--warn); font-size:13px; margin:2px 0 0; font-weight:600; }
+.qa { background:var(--card); border:1px solid var(--line);
+  border-radius:10px; padding:14px 16px; margin:0 0 14px; }
+.qa b { font-size:16px; }
+.qa .why { color:var(--dim); font-size:13px; margin:6px 0 10px; }
+.qa textarea { width:100%; font:inherit; padding:8px 10px; border-radius:8px;
+  border:1px solid var(--line); background:var(--bg); color:var(--ink); }
 .nothread { color:var(--dim); font-size:13px; margin:8px 0 0; }
 .thread > summary { cursor:pointer; color:var(--accent); font-size:14px; }
 .thread .panel { background:var(--bg); border:1px solid var(--line);
