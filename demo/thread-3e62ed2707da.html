@@ -1,0 +1,205 @@
+<meta charset="utf-8"><title>Tinsel Toys — Collabs</title><style>
+:root { color-scheme: light dark;
+  --bg:#faf9f7; --card:#fff; --ink:#1a1a1a; --dim:#6b6b6b; --line:#e6e3de;
+  --bad:#b3261e; --warn:#8a5a00; --good:#1e6b3a; --accent:#2a4b8d; }
+@media (prefers-color-scheme: dark) { :root {
+  --bg:#16181c; --card:#1e2126; --ink:#e9e6e1; --dim:#9a9a9a; --line:#2e3238;
+  --bad:#ff8a80; --warn:#e0a94a; --good:#7fd4a0; --accent:#8fb0ee; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+header { padding:20px 18px 8px; max-width:820px; margin:0 auto; }
+h1 { font-size:20px; margin:0 0 2px; }
+.sub { color:var(--dim); font-size:13px; }
+main { max-width:820px; margin:0 auto; padding:8px 18px 60px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; margin:0 0 12px; }
+.top { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; }
+.who { font-weight:650; font-size:16px; }
+.when { color:var(--dim); font-size:13px; margin-left:auto; white-space:nowrap; }
+.subject { color:var(--dim); font-size:13px; margin:2px 0 10px;
+  overflow-wrap:anywhere; }
+.offer { font-size:15px; margin:0 0 2px; }
+.rate { font-size:13px; margin:0 0 8px; }
+.rate.good { color:var(--good); } .rate.warn { color:var(--warn); }
+.rate.bad { color:var(--bad); }
+.flags { border-left:3px solid var(--bad); padding:6px 0 6px 10px;
+  margin:10px 0; font-size:14px; }
+.flags b { color:var(--bad); }
+.missing { color:var(--dim); font-size:13px; margin:6px 0; }
+.why { font-size:14px; margin:8px 0 0; }
+.why li { margin:2px 0; }
+details { margin-top:10px; font-size:13px; }
+summary { cursor:pointer; color:var(--accent); }
+.tag { display:inline-block; font-size:11px; letter-spacing:.04em;
+  text-transform:uppercase; padding:2px 7px; border-radius:99px;
+  border:1px solid var(--line); color:var(--dim); }
+.tag.urgent { border-color:var(--bad); color:var(--bad); }
+.tag.unsure { border-color:var(--warn); color:var(--warn); }
+a { color:var(--accent); }
+.empty { color:var(--dim); padding:30px 0; }
+.acts { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;
+  align-items:center; }
+/* Visual order, against a DOM order that exists for the Enter key. */
+.reason { order:8; }
+.savenote { order:9; }
+.reason { flex:1 1 240px; min-width:180px; font:inherit; padding:7px 10px;
+  border-radius:7px; border:1px dashed var(--line); background:transparent;
+  color:var(--ink); }
+.reason::placeholder { color:var(--dim); }
+button { font:inherit; padding:7px 13px; border-radius:7px; cursor:pointer;
+  border:1px solid var(--line); background:var(--card); color:var(--ink); }
+button.primary { border-color:var(--accent); color:var(--accent);
+  font-weight:600; }
+button.quiet { color:var(--dim); }
+.ack { border:1px solid var(--bad); border-radius:8px; padding:10px 12px;
+  margin-top:10px; font-size:14px; }
+.ack label { display:flex; gap:8px; align-items:flex-start; cursor:pointer; }
+.draft { background:var(--bg); border:1px solid var(--line); border-radius:8px;
+  padding:12px 14px; margin-top:12px; }
+.draft pre { white-space:pre-wrap; overflow-wrap:anywhere; margin:0 0 10px;
+  font:inherit; }
+.draftlinks { display:flex; gap:14px; flex-wrap:wrap; align-items:center;
+  margin:0 0 4px; }
+.draftlinks .go { font-weight:650; }
+.problem { color:var(--bad); font-size:14px; margin-top:10px; }
+.sendnote { font-size:13px; color:var(--dim); margin-top:6px; }
+textarea { width:100%; font:inherit; padding:10px; border-radius:7px;
+  border:1px solid var(--line); background:var(--card); color:var(--ink);
+  line-height:1.5; resize:vertical; }
+.draft textarea { margin:0 0 10px; }
+/* The filter bar. These rendered as bare blue links run together --
+   "Everything 311Ready to reply 58" -- because this block was lost in a
+   scripted edit that aborted before writing the file. The markup was right
+   the whole time, which is why a check for `class="filters"` passed while it
+   looked broken: presence is not appearance. */
+.filters { display:flex; gap:8px; flex-wrap:wrap; margin:14px 0 2px; }
+/* The search box. Deliberately a plain GET form: this page has no JavaScript
+   at all, so a search is also a shareable URL and the back button works. */
+/* Unmissable on purpose: a demo mistaken for the real inbox is how someone
+   ends up believing a made-up figure. */
+.demo { margin:0 0 14px; padding:10px 14px; border-radius:8px;
+  background:#8a5a00; color:#fff; font-weight:600; font-size:14px; }
+.search { display:flex; gap:8px; align-items:center; margin:14px 0 0; }
+.search input[type=search] { flex:1; min-width:0; font:inherit; padding:9px 12px;
+  border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--ink); }
+.search button { font:inherit; padding:9px 14px; border-radius:8px;
+  border:1px solid var(--line); background:var(--bg); color:var(--ink); cursor:pointer; }
+.search .clear { font-size:13px; color:var(--dim); text-decoration:none; padding:0 4px; }
+/* The second row is a DIFFERENT KIND of filter -- these AND with the row
+   above rather than replacing it -- so it is set apart instead of reading as
+   five more of the same. Lighter chips, tighter margin, hairline above. */
+.filters-2 { margin:8px 0 2px; padding-top:9px;
+  border-top:1px solid var(--line); }
+.filters-2 .chip { font-size:12px; padding:5px 11px; }
+.filters-2 .chip.on { border-color:var(--ink); background:var(--ink); }
+.filters-2 .chip.on span { background:rgba(255,255,255,.24); }
+.chip { display:inline-flex; align-items:center; gap:7px; padding:6px 13px;
+  border-radius:999px; border:1px solid var(--line); background:var(--card);
+  color:var(--ink); text-decoration:none; font-size:13px; line-height:1.2;
+  white-space:nowrap; transition:border-color .12s, color .12s; }
+.chip:hover { border-color:var(--accent); color:var(--accent); }
+.chip span { font-variant-numeric:tabular-nums; font-size:12px;
+  color:var(--dim); background:var(--bg); border-radius:999px;
+  padding:1px 7px; min-width:20px; text-align:center; }
+.chip.on { border-color:var(--accent); background:var(--accent); color:#fff;
+  font-weight:600; }
+.chip.on span { background:rgba(255,255,255,.22); color:#fff; }
+@media (max-width:520px) {
+  .filters { gap:6px; }
+  .filters-2 { padding-top:7px; }
+  .chip { padding:5px 10px; font-size:12px; }
+}
+.rank { display:inline-flex; align-items:center; justify-content:center;
+  min-width:24px; height:24px; padding:0 6px; border-radius:12px;
+  background:var(--bg); border:1px solid var(--line); color:var(--dim);
+  font-size:12px; font-weight:600; }
+/* Stays put while she scrolls: the whole point of an alpha is that she can
+   say "this one is wrong" AT the row that is wrong, not after scrolling back
+   to the bottom to find a form. */
+.fb { position:fixed; right:16px; bottom:16px; z-index:10; max-width:min(92vw,380px); }
+.fb > summary { list-style:none; display:inline-block; padding:10px 16px;
+  border-radius:22px; background:var(--accent); color:#fff; font-weight:600;
+  box-shadow:0 3px 14px rgba(0,0,0,.28); }
+.fb > summary::-webkit-details-marker { display:none; }
+.fb[open] > summary { border-radius:8px 8px 0 0; }
+.fb .panel { background:var(--card); border:1px solid var(--line);
+  border-top:none; border-radius:0 8px 8px 8px; padding:12px 14px;
+  box-shadow:0 3px 14px rgba(0,0,0,.28); }
+.fb p { margin:0 0 8px; font-size:13px; color:var(--dim); }
+button.send { border-color:var(--bad); color:var(--bad); font-weight:600; }
+.gmailrow { margin:10px 0 0; flex-basis:100%; display:flex; gap:8px;
+  align-items:center; flex-wrap:wrap; }
+.gmailrow span { color:var(--dim); font-size:13px; }
+.rankfb { margin:10px 0 0; flex-basis:100%; }
+.rankfb > summary { color:var(--dim); font-size:13px; cursor:pointer;
+  display:inline-block; }
+.rankrow { display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+  margin-top:8px; }
+.rankrow span { color:var(--dim); font-size:13px; flex:1 1 200px; }
+.noted { background:var(--card); border:1px solid var(--good);
+  border-radius:8px; padding:9px 12px; margin:10px 0 0; color:var(--good);
+  font-size:14px; }
+.unread { color:var(--warn); font-size:13px; margin:2px 0 0; font-weight:600; }
+.qa { background:var(--card); border:1px solid var(--line);
+  border-radius:10px; padding:14px 16px; margin:0 0 14px; }
+.qa b { font-size:16px; }
+.qa .why { color:var(--dim); font-size:13px; margin:6px 0 10px; }
+.qa textarea { width:100%; font:inherit; padding:8px 10px; border-radius:8px;
+  border:1px solid var(--line); background:var(--bg); color:var(--ink); }
+.nothread { color:var(--dim); font-size:13px; margin:8px 0 0; }
+.thread > summary { cursor:pointer; color:var(--accent); font-size:14px; }
+.thread .panel { background:var(--bg); border:1px solid var(--line);
+  border-radius:8px; padding:10px 12px; margin:8px 0 0; }
+.thread .msg { border-bottom:1px solid var(--line); padding:8px 0; }
+.thread .msg:last-of-type { border-bottom:0; }
+.thread pre { white-space:pre-wrap; overflow-wrap:anywhere; margin:6px 0 0;
+  font:inherit; color:var(--ink); }
+.accepted { color:var(--accent); font-size:13px; margin:2px 0 0;
+  font-weight:600; }
+.mailsub { flex:1 1 320px; }
+.pager { margin:18px 0 0; color:var(--dim); font-size:13px; }
+.did { color:var(--good); font-size:13px; margin:2px 0 0; }
+.starform { display:inline; margin:0; }
+.star { background:none; border:0; padding:0 2px; cursor:pointer;
+  font-size:17px; line-height:1; color:var(--dim); }
+.star.on { color:var(--warn); }
+.card.starred { border-color:var(--warn); }
+.sender { color:var(--dim); font-size:13px; margin:2px 0 0;
+  overflow-wrap:anywhere; }
+.backlink { margin:6px 0 0; font-size:13px; }
+.hday { font-size:13px; font-weight:650; color:var(--dim); margin:18px 0 6px;
+  text-transform:none; }
+.hist { list-style:none; margin:0; padding:0; }
+.hist li { display:flex; gap:12px; align-items:baseline; flex-wrap:wrap;
+  padding:7px 0; border-bottom:1px solid var(--line); font-size:14px; }
+.hwhen { color:var(--dim); font-size:13px; min-width:66px; }
+.hwhat { font-weight:600; }
+.hwho { color:var(--dim); font-size:13px; }
+.hnote { color:var(--dim); font-style:italic; font-size:13px;
+  flex-basis:100%; }
+.tag.top { background:var(--good); color:var(--bg); border-color:var(--good); }
+.stale { background:var(--card); border:1px solid var(--warn);
+  border-radius:8px; padding:10px 14px; margin:0 0 12px; color:var(--warn); }
+.thanks { background:var(--card); border:1px solid var(--good);
+  border-radius:8px; padding:10px 14px; margin:0 0 12px; color:var(--good); }
+@media (max-width:520px) { .fb { right:10px; bottom:10px; } }
+
+/* Static export: the reply buttons need a server to POST to, so they are
+   disabled rather than hidden -- seeing what the tool offers is part of the
+   demo, pretending a button works is not. SEARCH IS NOT IN THIS LIST: it runs
+   client-side here, see _SEARCH_JS.
+
+   THIS CSS STYLED NOTHING UNTIL #170. render_card gated the whole action form
+   on a token, the export passes none, and so the demo carried a banner saying
+   the buttons were "shown but disabled" above a page with no buttons at all.
+   The elements now carry `disabled` themselves; this only greys them. */
+form.acts, form.starform { opacity: .55; }
+form.acts button, form.starform button { cursor: help; }
+.demo-explain { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px;
+  background: #24405c; color: #fff; font-size: 14px; }
+.demo-explain .why { color: #cbd8e6; font-size: 13px; }
+.static-note { margin: 0 0 14px; padding: 10px 14px; border-radius: 8px;
+  background: #24405c; color: #fff; font-size: 14px; }
+.no-hits { color: #8a5a00; font-weight: 600; margin: 12px 0; }
+</style><p class="static-note">Static preview of the real tool. The list, the ranking, the filters and the search all work here. Every control is shown exactly as she sees it — the buttons are <b>disabled</b>, because posting an answer needs the running app and nothing here should pretend otherwise.</p><header><h1>Tinsel Toys</h1><div class="sub">The whole conversation. Anything not kept here was read from Gmail just now and <b>not saved</b>.</div><p class="backlink"><a href="index.html#d-3e62ed2707da">← Back to the offer</a></p></header><main><div class="msg"><b>They wrote</b> <span class="hwho">Aug 30</span><div class="subject">Q4 toy launch — creators wanted</div><pre>(this one could not be read)</pre></div></main>

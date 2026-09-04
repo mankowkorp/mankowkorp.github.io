@@ -195,11 +195,14 @@ button.send { border-color:var(--bad); color:var(--bad); font-weight:600; }
    the buttons were "shown but disabled" above a page with no buttons at all.
    The elements now carry `disabled` themselves; this only greys them. */
 form.acts, form.starform { opacity: .55; }
-form.acts button, form.starform button { cursor: default; }
+form.acts button, form.starform button { cursor: help; }
+.demo-explain { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px;
+  background: #24405c; color: #fff; font-size: 14px; }
+.demo-explain .why { color: #cbd8e6; font-size: 13px; }
 .static-note { margin: 0 0 14px; padding: 10px 14px; border-radius: 8px;
   background: #24405c; color: #fff; font-size: 14px; }
 .no-hits { color: #8a5a00; font-weight: 600; margin: 12px 0; }
-</style><p class="demo">DEMO — every brand, offer and figure below is invented. Nothing here is anyone's real mail.</p><p class="static-note">Static preview of the real tool. The list, the ranking, the filters and the search all work here. Every control is shown exactly as she sees it — the buttons are <b>disabled</b>, because posting an answer needs the running app and nothing here should pretend otherwise.</p><header><h1>Collabs</h1><div class="sub">0 to look at, best first. Nothing leaves until you have read it and pressed send.</div><form class="search" method="get" action="/"><input type="hidden" name="f" value="flagged"><input type="hidden" name="age" value="old"><input type="search" name="q" value="" placeholder="Search a brand, sender or subject" aria-label="Search"><button>Search</button></form><div class="filters"><a class="chip" href="age-old.html">Everything <span>1</span></a><a class="chip" href="f-starred-age-old.html">Starred <span>0</span></a><a class="chip" href="f-untouched-age-old.html">Not touched yet <span>1</span></a><a class="chip" href="f-unread-age-old.html">Unread in Gmail <span>0</span></a><a class="chip" href="f-accepted-age-old.html">Accepted — waiting on them <span>0</span></a><a class="chip" href="f-ready-age-old.html">Ready to reply <span>1</span></a><a class="chip" href="f-money-age-old.html">Has a real offer <span>1</span></a><a class="chip on" href="f-flagged-age-old.html">Watch-out terms <span>0</span></a><a class="chip" href="f-unverified-age-old.html">Unverified sender <span>0</span></a></div><div class="filters filters-2"><a class="chip" href="f-flagged.html">Any time <span>0</span></a><a class="chip" href="f-flagged-age-new.html">Last 7 days <span>0</span></a><a class="chip on" href="f-flagged-age-old.html">Older than 7 days <span>0</span></a><a class="chip" href="f-flagged-age-old-talking.html">Already talking <span>0</span></a></div><p class="backlink"><a href="mail-all.html">All mail, not just offers</a></p></header><main><p class="empty">Nothing waiting. Run the morning sync if that looks wrong.</p></main>
+</style><p class="demo">DEMO — every brand, offer and figure below is invented. Nothing here is anyone's real mail.</p><p class="static-note">Static preview of the real tool. The list, the ranking, the filters and the search all work here. Every control is shown exactly as she sees it — the buttons are <b>disabled</b>, because posting an answer needs the running app and nothing here should pretend otherwise.</p><header><h1>Collabs</h1><div class="sub">0 to look at, best first. Nothing leaves until you have read it and pressed send.</div><form class="search" method="get" action="/"><input type="hidden" name="f" value="flagged"><input type="hidden" name="age" value="old"><input type="search" name="q" value="" placeholder="Search a brand, sender or subject" aria-label="Search"><button>Search</button></form><div class="filters"><a class="chip" href="age-old.html">Everything <span>7</span></a><a class="chip" href="f-starred-age-old.html">Starred <span>0</span></a><a class="chip" href="f-untouched-age-old.html">Not touched yet <span>7</span></a><a class="chip" href="f-unread-age-old.html">Unread in Gmail <span>0</span></a><a class="chip" href="f-accepted-age-old.html">Accepted — waiting on them <span>0</span></a><a class="chip" href="f-ready-age-old.html">Ready to reply <span>7</span></a><a class="chip" href="f-money-age-old.html">Has a real offer <span>7</span></a><a class="chip on" href="f-flagged-age-old.html">Watch-out terms <span>0</span></a><a class="chip" href="f-unverified-age-old.html">Unverified sender <span>0</span></a></div><div class="filters filters-2"><a class="chip" href="f-flagged.html">Any time <span>4</span></a><a class="chip" href="f-flagged-age-new.html">Last 7 days <span>4</span></a><a class="chip on" href="f-flagged-age-old.html">Older than 7 days <span>0</span></a><a class="chip" href="f-flagged-age-old-talking.html">Already talking <span>0</span></a></div><p class="backlink"><a href="mail-all.html">All mail, not just offers</a></p></header><main><p class="empty">Nothing waiting. Run the morning sync if that looks wrong.</p></main>
 <script>
 (function () {
   var form = document.querySelector("form.search");
@@ -232,5 +235,39 @@ form.acts button, form.starform button { cursor: default; }
   input.addEventListener("input", apply);
   form.addEventListener("submit", function (e) { e.preventDefault(); apply(); });
   apply();
+})();
+</script>
+
+<script>
+// WHAT EACH BUTTON WOULD DO. The controls are shown but inert here -- they
+// are `type="button"`, so they cannot submit anything -- and a button that
+// visibly does nothing teaches nothing. Clicking one opens a panel saying
+// what it would do in the real tool.
+//
+// JavaScript is fine HERE and nowhere else: the demo is a static export with
+// no server, and it already ships a script for its client-side search. The
+// tool she actually uses stays script-free.
+(function () {
+  function panelFor(card) {
+    var p = card.querySelector(".demo-explain");
+    if (!p) {
+      p = document.createElement("div");
+      p.className = "demo-explain";
+      card.appendChild(p);
+    }
+    return p;
+  }
+  document.addEventListener("click", function (ev) {
+    var btn = ev.target.closest ? ev.target.closest("button[data-explain]") : null;
+    if (!btn) return;
+    ev.preventDefault();
+    var card = btn.closest("article.card") || btn.parentNode;
+    var p = panelFor(card);
+    p.innerHTML = "<b>In the real tool:</b> " +
+      btn.getAttribute("data-explain").replace(/</g, "&lt;") +
+      "<br><span class=\"why\">Nothing happened just now \u2014 this is a "
+      + "preview, so the buttons are switched off.</span>";
+    p.scrollIntoView({block: "nearest"});
+  });
 })();
 </script>
