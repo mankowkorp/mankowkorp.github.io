@@ -1,4 +1,4 @@
-<meta charset="utf-8"><title>Collabs</title><style>
+<meta charset="utf-8"><title>All mail — Collabs</title><style>
 :root { color-scheme: light dark;
   --bg:#faf9f7; --card:#fff; --ink:#1a1a1a; --dim:#6b6b6b; --line:#e6e3de;
   --bad:#b3261e; --warn:#8a5a00; --good:#1e6b3a; --accent:#2a4b8d; }
@@ -179,38 +179,4 @@ form.acts button, form.starform button { cursor: default; }
 .static-note { margin: 0 0 14px; padding: 10px 14px; border-radius: 8px;
   background: #24405c; color: #fff; font-size: 14px; }
 .no-hits { color: #8a5a00; font-weight: 600; margin: 12px 0; }
-</style><p class="demo">DEMO — every brand, offer and figure below is invented. Nothing here is anyone's real mail.</p><p class="static-note">Static preview of the real tool. The list, the ranking, the filters and the search all work here. Every control is shown exactly as she sees it — the buttons are <b>disabled</b>, because posting an answer needs the running app and nothing here should pretend otherwise.</p><header><h1>Collabs</h1><div class="sub">1 to look at, best first. Nothing is ever sent from here — every reply ends up as a draft you send yourself.</div><form class="search" method="get" action="/"><input type="hidden" name="age" value="old"><input type="search" name="q" value="" placeholder="Search a brand, sender or subject" aria-label="Search"><button>Search</button></form><div class="filters"><a class="chip on" href="age-old.html">Everything <span>1</span></a><a class="chip" href="f-starred-age-old.html">Starred <span>0</span></a><a class="chip" href="f-untouched-age-old.html">Not touched yet <span>1</span></a><a class="chip" href="f-unread-age-old.html">Unread in Gmail <span>0</span></a><a class="chip" href="f-ready-age-old.html">Ready to reply <span>1</span></a><a class="chip" href="f-money-age-old.html">Has a real offer <span>1</span></a><a class="chip" href="f-flagged-age-old.html">Watch-out terms <span>0</span></a><a class="chip" href="f-unverified-age-old.html">Unverified sender <span>0</span></a></div><div class="filters filters-2"><a class="chip" href="index.html">Any time <span>10</span></a><a class="chip" href="age-new.html">Last 7 days <span>9</span></a><a class="chip on" href="age-old.html">Older than 7 days <span>1</span></a><a class="chip" href="age-old-talking.html">Already talking <span>0</span></a></div><p class="backlink"><a href="mail-all.html">All mail, not just offers</a></p></header><main><article class="card" id="d-3dc52a91b101"><div class="top"><span class="rank">1</span><span class="who">Solace Sleep</span><form method="post" action="/action" class="starform"><input type="hidden" name="deal" value="solace-sleep.example"><button class="star" name="action" value="star" title="Star this one" aria-label="Star this one" disabled>☆</button></form><span class="tag">low</span><span class="when">7 days waiting · Aug 28</span></div><div class="sender">from hello@solace-sleep.example</div><div class="subject">Following up — did you see our offer?</div><p class="offer">$300 for 1 deliverable (stated)</p><p class="rate good">at or above your rate — you ask $150 for 1 video</p><ul class="why"><li>Demo data. Nothing here is a real brand or a real offer.</li></ul><details><summary>Show the full message in Gmail</summary><p><a href="https://mail.google.com/mail/u/0/#search/rfc822msgid%3Ademo-16%40solace-sleep.example" rel="noreferrer noopener" target="_blank">Open the thread</a></p></details><form method="post" action="/action" class="acts"><input type="hidden" name="deal" value="solace-sleep.example"><input type="hidden" name="rank" value="1"><input type="hidden" name="bucket" value="1-money-on-the-table"><button class="quiet savenote" name="action" value="note" disabled>Save note</button><button class="" name="action" value="clarify" disabled>Ask questions</button><button class="" name="action" value="counter" disabled>Counter offer</button><button class="primary" name="action" value="accept" disabled>Accept ★</button><button name="action" value="decline" disabled>Decline</button><button class="quiet" name="action" value="later" disabled>Not now</button><input class="reason" type="text" name="reason" maxlength="200" disabled placeholder="why? (optional) — type it and press enter to save it"><details class="rankfb"><summary>Wrong place?</summary><div class="rankrow"><button class="quiet" name="action" value="rank_up" disabled>Should be higher</button><button class="quiet" name="action" value="rank_down" disabled>Should be lower</button><span>Type in the <b>why?</b> box above first if you want to say what is wrong — it goes with your answer.</span></div></details></form></article></main>
-<script>
-(function () {
-  var form = document.querySelector("form.search");
-  if (!form) return;
-  var input = form.querySelector("input[type=search]");
-  var cards = Array.prototype.slice.call(document.querySelectorAll("article.card"));
-  var main = document.querySelector("main");
-  var msg = document.createElement("p");
-  msg.className = "no-hits";
-  msg.hidden = true;
-  if (main) main.insertBefore(msg, main.firstChild);
-
-  function apply() {
-    var q = input.value.toLowerCase().trim();
-    var terms = q ? q.split(/\s+/) : [];
-    var shown = 0;
-    cards.forEach(function (card) {
-      var hay = (card.textContent || "").toLowerCase();
-      var hit = terms.every(function (t) { return hay.indexOf(t) !== -1; });
-      card.hidden = !hit;
-      if (hit) shown++;
-    });
-    if (terms.length && shown === 0) {
-      msg.textContent = "Nothing matches \u201c" + input.value + "\u201d.";
-      msg.hidden = false;
-    } else {
-      msg.hidden = true;
-    }
-  }
-  input.addEventListener("input", apply);
-  form.addEventListener("submit", function (e) { e.preventDefault(); apply(); });
-  apply();
-})();
-</script>
+</style><p class="static-note">Static preview of the real tool. The list, the ranking, the filters and the search all work here. Every control is shown exactly as she sees it — the buttons are <b>disabled</b>, because posting an answer needs the running app and nothing here should pretend otherwise.</p><header><h1>All mail</h1><div class="sub">Everything that has arrived, newest first — including the senders who never named a price, which the offers list cannot show you. <b>Nothing here changes your Gmail.</b></div><p class="backlink"><a href="index.html">← Back to the offers</a> · <a href="mail-all.html">What have I done here?</a></p><form class="search" method="get" action="/mail"><input type="hidden" name="v" value="deliveries"><input type="search" name="q" value="" placeholder="Search a brand, sender or subject" aria-label="Search"><button>Search</button></form><div class="chips"><a class="chip" href="mail-all.html">Everything <b>18</b></a><a class="chip" href="mail-nodeal.html">Never became a deal <b>3</b></a><a class="chip on" href="mail-deliveries.html">Orders &amp; shipping <b>1</b></a></div></header><main><h2 class="hday">Thursday 3 September 2026</h2><ol class="hist"><li><span class="hwhen">11:22 am</span><span class="hwhat">Orderly</span><span class="mailsub">Your order #4471 has shipped</span><span class="tag">order / shipping</span><span class="hwho">hello@orderly.test · <a href="https://mail.google.com/mail/u/0/#search/from%3Ahello%40orderly.test" rel="noreferrer noopener" target="_blank">open in Gmail</a></span></li></ol></main>
