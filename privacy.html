@@ -17,17 +17,20 @@
 </style>
 
 <h1>Collab-Sorter — Privacy Policy</h1>
-<p class="date">Last updated 3 September 2026</p>
+<p class="date">Last updated 11 September 2026</p>
 
 <p>Collab-Sorter is a private tool used by one person to triage collaboration
 offers in their own email inbox. It is not a product, it is not offered to the
 public, and it has no users other than its owner.</p>
 
 <h2>What it accesses</h2>
-<p>With the account holder's explicit Google consent, Collab-Sorter reads email
-using the <code>gmail.readonly</code> scope. That scope is read-only: the
-application cannot send, delete, or modify mail, and it does not request any
-scope that would allow it to.</p>
+<p>With the account holder's explicit Google consent, Collab-Sorter uses three
+Gmail permissions: <strong>read</strong> (<code>gmail.readonly</code>) to find
+collaboration offers; <strong>modify</strong> (<code>gmail.modify</code>) to mark
+a message read or archive it, only when the account holder presses that button;
+and <strong>send</strong> (<code>gmail.send</code>) to send a reply, only after
+the account holder has reviewed the exact text and confirmed it. It never sends,
+deletes or changes mail on its own.</p>
 
 <h2>Where the data goes</h2>
 <p>Email is fetched to a single personal computer and stored only on that
@@ -36,14 +39,17 @@ system. Nothing is uploaded to a website.</p>
 
 <p><strong>One third party is involved.</strong> To decide whether a message is
 a genuine collaboration offer or a scam, the text of candidate messages is sent
-to Anthropic's API for classification. Anthropic processes it to return that
-answer. No other third party receives message content, and the data is not sold,
+to Anthropic's API to classify them and to draft replies the account holder asks
+for. Anthropic processes it to return those answers. No other third party receives message content, and the data is not sold,
 shared, or used for advertising by anyone.</p>
 
 <h2>What is kept, and for how long</h2>
 <p>The tool stores what it needs to rank offers: sender, subject, extracted
-figures, and its own verdicts. Message bodies are not retained after
-classification. Access tokens are encrypted at rest on the local machine.</p>
+figures, and its own verdicts. To draft replies, it also keeps the text of likely
+offers, and the account holder's own replies to those senders, for up to 45 days
+(at most 20,000 characters each), deleting it sooner once the account holder
+decides on the offer. Messages identified as scams are never stored. Access
+tokens are encrypted at rest on the local machine.</p>
 
 <h2>Revoking access</h2>
 <p>The account holder can revoke Collab-Sorter's access at any time at
