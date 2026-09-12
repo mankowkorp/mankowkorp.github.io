@@ -5,12 +5,12 @@
 
 ## What this page claims
 
-- Ranks roughly 350 collaboration pitches a week for one person, who uses it daily.
-- Holds read-only mail access and cannot send; it drafts, she sends.
-- The read-only path was chosen over an easier one that would have required the
-  broadest mailbox permission available.
-- Runs on a personal machine. No server, no account system. Message bodies are
-  not retained after scoring.
+- Ranks more than 100 collaboration offers a week for one person, who uses it daily.
+- Holds three separate Gmail permissions: read-only for the daily check, modify
+  used when she presses a button, and send only for a reply she has confirmed.
+  Never the full-mailbox permission.
+- Runs on a personal machine. No server, no account system. Message text is kept
+  up to 45 days to draft replies.
 - Ranking changes are measured against the full corpus, not against complaints.
 
 Every number above is load-bearing. If one changes, change it here in the same

@@ -11,7 +11,7 @@ are published exactly as committed.
 
 | Path | Live at | What it is | README |
 |---|---|---|---|
-| `index.html` | `/` | The biography. Method, then day work, then personal projects. | this file |
+| `index.html` | `/` | The biography. Method, then day work, then personal projects. The mail triage card repeats claims from `collab-sorter/`, so change both together. | this file |
 | `migration/` | `/migration/` | Evidence page — a migration against an immovable cutoff | [↗](migration/README.md) |
 | `guards/` | `/guards/` | Evidence page — scans that reported clean because they could not run | [↗](guards/README.md) |
 | `scripted-review/` | `/scripted-review/` | Evidence page — a console-only review made repeatable | [↗](scripted-review/README.md) |
