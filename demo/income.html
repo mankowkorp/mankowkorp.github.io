@@ -1,0 +1,226 @@
+<meta charset="utf-8"><title>Income — Collabs</title><style>
+:root { color-scheme: light dark;
+  --bg:#faf9f7; --card:#fff; --ink:#1a1a1a; --dim:#6b6b6b; --line:#e6e3de;
+  --bad:#b3261e; --warn:#8a5a00; --good:#1e6b3a; --accent:#2a4b8d; }
+@media (prefers-color-scheme: dark) { :root {
+  --bg:#16181c; --card:#1e2126; --ink:#e9e6e1; --dim:#9a9a9a; --line:#2e3238;
+  --bad:#ff8a80; --warn:#e0a94a; --good:#7fd4a0; --accent:#8fb0ee; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+header { padding:20px 18px 8px; max-width:820px; margin:0 auto; }
+h1 { font-size:20px; margin:0 0 2px; }
+.sub { color:var(--dim); font-size:13px; }
+main { max-width:820px; margin:0 auto; padding:8px 18px 60px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; margin:0 0 12px; }
+.top { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; }
+.who { font-weight:650; font-size:16px; }
+.when { color:var(--dim); font-size:13px; margin-left:auto; white-space:nowrap; }
+.subject { color:var(--dim); font-size:13px; margin:2px 0 10px;
+  overflow-wrap:anywhere; }
+.offer { font-size:15px; margin:0 0 2px; }
+.rate { font-size:13px; margin:0 0 8px; }
+.rate.good { color:var(--good); } .rate.warn { color:var(--warn); }
+.rate.bad { color:var(--bad); }
+.flags { border-left:3px solid var(--bad); padding:6px 0 6px 10px;
+  margin:10px 0; font-size:14px; }
+.flags b { color:var(--bad); }
+.missing { color:var(--dim); font-size:13px; margin:6px 0; }
+.why { font-size:14px; margin:8px 0 0; }
+.why li { margin:2px 0; }
+details { margin-top:10px; font-size:13px; }
+summary { cursor:pointer; color:var(--accent); }
+.tag { display:inline-block; font-size:11px; letter-spacing:.04em;
+  text-transform:uppercase; padding:2px 7px; border-radius:99px;
+  border:1px solid var(--line); color:var(--dim); }
+.tag.urgent { border-color:var(--bad); color:var(--bad); }
+.tag.unsure { border-color:var(--warn); color:var(--warn); }
+a { color:var(--accent); }
+.empty { color:var(--dim); padding:30px 0; }
+.acts { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;
+  align-items:center; }
+/* Visual order, against a DOM order that exists for the Enter key. */
+.reason { order:8; }
+.savenote { order:9; }
+.reason { flex:1 1 240px; min-width:180px; font:inherit; padding:7px 10px;
+  border-radius:7px; border:1px dashed var(--line); background:transparent;
+  color:var(--ink); }
+.reason::placeholder { color:var(--dim); }
+button { font:inherit; padding:7px 13px; border-radius:7px; cursor:pointer;
+  border:1px solid var(--line); background:var(--card); color:var(--ink); }
+button.primary { border-color:var(--accent); color:var(--accent);
+  font-weight:600; }
+button.quiet { color:var(--dim); }
+.ack { border:1px solid var(--bad); border-radius:8px; padding:10px 12px;
+  margin-top:10px; font-size:14px; }
+.ack label { display:flex; gap:8px; align-items:flex-start; cursor:pointer; }
+.draft { background:var(--bg); border:1px solid var(--line); border-radius:8px;
+  padding:12px 14px; margin-top:12px; }
+.draft pre { white-space:pre-wrap; overflow-wrap:anywhere; margin:0 0 10px;
+  font:inherit; }
+.draftlinks { display:flex; gap:14px; flex-wrap:wrap; align-items:center;
+  margin:0 0 4px; }
+.draftlinks .go { font-weight:650; }
+.problem { color:var(--bad); font-size:14px; margin-top:10px; }
+.sendnote { font-size:13px; color:var(--dim); margin-top:6px; }
+textarea { width:100%; font:inherit; padding:10px; border-radius:7px;
+  border:1px solid var(--line); background:var(--card); color:var(--ink);
+  line-height:1.5; resize:vertical; }
+.draft textarea { margin:0 0 10px; }
+/* The filter bar. These rendered as bare blue links run together --
+   "Everything 311Ready to reply 58" -- because this block was lost in a
+   scripted edit that aborted before writing the file. The markup was right
+   the whole time, which is why a check for `class="filters"` passed while it
+   looked broken: presence is not appearance. */
+.filters { display:flex; gap:8px; flex-wrap:wrap; margin:14px 0 2px; }
+/* The search box. Deliberately a plain GET form: this page has no JavaScript
+   at all, so a search is also a shareable URL and the back button works. */
+/* Unmissable on purpose: a demo mistaken for the real inbox is how someone
+   ends up believing a made-up figure. */
+.demo { margin:0 0 14px; padding:10px 14px; border-radius:8px;
+  background:#8a5a00; color:#fff; font-weight:600; font-size:14px; }
+.search { display:flex; gap:8px; align-items:center; margin:14px 0 0; }
+.search input[type=search] { flex:1; min-width:0; font:inherit; padding:9px 12px;
+  border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--ink); }
+.search button { font:inherit; padding:9px 14px; border-radius:8px;
+  border:1px solid var(--line); background:var(--bg); color:var(--ink); cursor:pointer; }
+.search .clear { font-size:13px; color:var(--dim); text-decoration:none; padding:0 4px; }
+/* The second row is a DIFFERENT KIND of filter -- these AND with the row
+   above rather than replacing it -- so it is set apart instead of reading as
+   five more of the same. Lighter chips, tighter margin, hairline above. */
+.filters-2 { margin:8px 0 2px; padding-top:9px;
+  border-top:1px solid var(--line); }
+.filters-2 .chip { font-size:12px; padding:5px 11px; }
+.filters-2 .chip.on { border-color:var(--ink); background:var(--ink); }
+.filters-2 .chip.on span { background:rgba(255,255,255,.24); }
+.chip { display:inline-flex; align-items:center; gap:7px; padding:6px 13px;
+  border-radius:999px; border:1px solid var(--line); background:var(--card);
+  color:var(--ink); text-decoration:none; font-size:13px; line-height:1.2;
+  white-space:nowrap; transition:border-color .12s, color .12s; }
+.chip:hover { border-color:var(--accent); color:var(--accent); }
+.chip span { font-variant-numeric:tabular-nums; font-size:12px;
+  color:var(--dim); background:var(--bg); border-radius:999px;
+  padding:1px 7px; min-width:20px; text-align:center; }
+.chip.on { border-color:var(--accent); background:var(--accent); color:#fff;
+  font-weight:600; }
+.chip.on span { background:rgba(255,255,255,.22); color:#fff; }
+@media (max-width:520px) {
+  .filters { gap:6px; }
+  .filters-2 { padding-top:7px; }
+  .chip { padding:5px 10px; font-size:12px; }
+}
+.rank { display:inline-flex; align-items:center; justify-content:center;
+  min-width:24px; height:24px; padding:0 6px; border-radius:12px;
+  background:var(--bg); border:1px solid var(--line); color:var(--dim);
+  font-size:12px; font-weight:600; }
+/* Stays put while she scrolls: the whole point of an alpha is that she can
+   say "this one is wrong" AT the row that is wrong, not after scrolling back
+   to the bottom to find a form. */
+.fb { position:fixed; right:16px; bottom:16px; z-index:10; max-width:min(92vw,380px); }
+.fb > summary { list-style:none; display:inline-block; padding:10px 16px;
+  border-radius:22px; background:var(--accent); color:#fff; font-weight:600;
+  box-shadow:0 3px 14px rgba(0,0,0,.28); }
+.fb > summary::-webkit-details-marker { display:none; }
+.fb[open] > summary { border-radius:8px 8px 0 0; }
+.fb .panel { background:var(--card); border:1px solid var(--line);
+  border-top:none; border-radius:0 8px 8px 8px; padding:12px 14px;
+  box-shadow:0 3px 14px rgba(0,0,0,.28); }
+.fb p { margin:0 0 8px; font-size:13px; color:var(--dim); }
+/* The same pill on pages that must hold no token: a link back to the list
+   with the box already open. */
+.fblink { padding:10px 16px; border-radius:22px; background:var(--accent);
+  color:#fff; font-weight:600; text-decoration:none;
+  box-shadow:0 3px 14px rgba(0,0,0,.28); }
+button.send { border-color:var(--bad); color:var(--bad); font-weight:600; }
+.gmailrow { margin:10px 0 0; flex-basis:100%; display:flex; gap:8px;
+  align-items:center; flex-wrap:wrap; }
+.gmailrow span { color:var(--dim); font-size:13px; }
+.rankfb { margin:10px 0 0; flex-basis:100%; }
+.rankfb > summary { color:var(--dim); font-size:13px; cursor:pointer;
+  display:inline-block; }
+.rankrow { display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+  margin-top:8px; }
+.rankrow span { color:var(--dim); font-size:13px; flex:1 1 200px; }
+.noted { background:var(--card); border:1px solid var(--good);
+  border-radius:8px; padding:9px 12px; margin:10px 0 0; color:var(--good);
+  font-size:14px; }
+.unread { color:var(--warn); font-size:13px; margin:2px 0 0; font-weight:600; }
+.qa { background:var(--card); border:1px solid var(--line);
+  border-radius:10px; padding:14px 16px; margin:0 0 14px; }
+.qa b { font-size:16px; }
+.qa .why { color:var(--dim); font-size:13px; margin:6px 0 10px; }
+.qa textarea { width:100%; font:inherit; padding:8px 10px; border-radius:8px;
+  border:1px solid var(--line); background:var(--bg); color:var(--ink); }
+.nothread { color:var(--dim); font-size:13px; margin:8px 0 0; }
+.thread > summary { cursor:pointer; color:var(--accent); font-size:14px; }
+.thread .panel { background:var(--bg); border:1px solid var(--line);
+  border-radius:8px; padding:10px 12px; margin:8px 0 0; }
+.thread .msg { border-bottom:1px solid var(--line); padding:8px 0; }
+.thread .msg:last-of-type { border-bottom:0; }
+.thread pre { white-space:pre-wrap; overflow-wrap:anywhere; margin:6px 0 0;
+  font:inherit; color:var(--ink); }
+.accepted { color:var(--accent); font-size:13px; margin:2px 0 0;
+  font-weight:600; }
+.mailsub { flex:1 1 320px; }
+.pager { margin:18px 0 0; color:var(--dim); font-size:13px; }
+.did { color:var(--good); font-size:13px; margin:2px 0 0; }
+.starform { display:inline; margin:0; }
+.star { background:none; border:0; padding:0 2px; cursor:pointer;
+  font-size:17px; line-height:1; color:var(--dim); }
+.star.on { color:var(--warn); }
+.card.starred { border-color:var(--warn); }
+.sender { color:var(--dim); font-size:13px; margin:2px 0 0;
+  overflow-wrap:anywhere; }
+.backlink { margin:6px 0 0; font-size:13px; }
+.hday { font-size:13px; font-weight:650; color:var(--dim); margin:18px 0 6px;
+  text-transform:none; }
+.hist { list-style:none; margin:0; padding:0; }
+.hist li { display:flex; gap:12px; align-items:baseline; flex-wrap:wrap;
+  padding:7px 0; border-bottom:1px solid var(--line); font-size:14px; }
+.hwhen { color:var(--dim); font-size:13px; min-width:66px; }
+.hwhat { font-weight:600; }
+.hwho { color:var(--dim); font-size:13px; }
+.hnote { color:var(--dim); font-style:italic; font-size:13px;
+  flex-basis:100%; }
+.tag.top { background:var(--good); color:var(--bg); border-color:var(--good); }
+.stale { background:var(--card); border:1px solid var(--warn);
+  border-radius:8px; padding:10px 14px; margin:0 0 12px; color:var(--warn); }
+.thanks { background:var(--card); border:1px solid var(--good);
+  border-radius:8px; padding:10px 14px; margin:0 0 12px; color:var(--good); }
+@media (max-width:520px) { .fb { right:10px; bottom:10px; } }
+
+.inc-wrap { overflow-x:auto; }
+table.inc { border-collapse:collapse; width:100%; font-size:13px;
+  margin:6px 0 16px; }
+table.inc th, table.inc td { text-align:right; padding:4px 7px;
+  border-bottom:1px solid var(--line); white-space:nowrap; }
+table.inc th:first-child, table.inc td:first-child { text-align:left; }
+table.inc th { color:var(--dim); font-weight:600; }
+table.inc tr.total td { font-weight:650; border-top:2px solid var(--line); }
+.kpi { display:flex; gap:10px; flex-wrap:wrap; margin:8px 0 14px; }
+.kpi div { background:var(--card); border:1px solid var(--line);
+  border-radius:10px; padding:10px 14px; min-width:130px; }
+.kpi b { display:block; font-size:18px; }
+.kpi span { color:var(--dim); font-size:12px; }
+h2.inc { font-size:16px; margin:22px 0 2px; }
+.inc-note { color:var(--dim); font-size:13px; margin:0 0 8px; }
+
+/* Static export: the reply buttons need a server to POST to, so they are
+   disabled rather than hidden -- seeing what the tool offers is part of the
+   demo, pretending a button works is not. SEARCH IS NOT IN THIS LIST: it runs
+   client-side here, see _SEARCH_JS.
+
+   THIS CSS STYLED NOTHING UNTIL #170. render_card gated the whole action form
+   on a token, the export passes none, and so the demo carried a banner saying
+   the buttons were "shown but disabled" above a page with no buttons at all.
+   The elements now carry `disabled` themselves; this only greys them. */
+form.acts, form.starform { opacity: .55; }
+form.acts button, form.starform button { cursor: help; }
+.demo-explain { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px;
+  background: #24405c; color: #fff; font-size: 14px; }
+.demo-explain .why { color: #cbd8e6; font-size: 13px; }
+.static-note { margin: 0 0 14px; padding: 10px 14px; border-radius: 8px;
+  background: #24405c; color: #fff; font-size: 14px; }
+.no-hits { color: #8a5a00; font-weight: 600; margin: 12px 0; }
+</style><p class="static-note">Static preview of the real tool. The list, the ranking, the filters and the search all work here. Every control is shown exactly as she sees it — the buttons are <b>disabled</b>, because posting an answer needs the running app and nothing here should pretend otherwise.</p><header><h1>Your income</h1><div class="sub">Settled TikTok Shop commission from your Affiliate Center order export, and your LIVE hours from your TikTok data download. Nothing on this page comes from your mail, and nothing here changes until the report is run again.</div><p class="backlink"><a href="index.html">← Back to the offers</a> · <a href="mail-all.html">What have I done here?</a></p></header><main><div class="kpi"><div><b>$5,558.94</b><span>settled, all time</span></div><div><b>$6,674.36</b><span>estimated incl. pending</span></div><div><b>$810.66</b><span>settled, 2026-08</span></div><div><b>10%</b><span>from your top shop</span></div><div><b>$36.48</b><span>LIVE commission per hour, all time</span></div></div><h2 class="inc">Month by month</h2><p class="inc-note">By order month. <b>Settled</b> is what TikTok paid on those orders; <b>pending</b> and <b>ineligible</b> are its own estimates for the rest, so the last two months read low until they settle. Lag is the median days from order to settlement.</p><div class="inc-wrap"><table class="inc"><tr><th>Month</th><th>Orders</th><th>GMV</th><th>Settled</th><th>Pending</th><th>Ineligible</th><th>LIVE</th><th>Video</th><th>Other</th><th>Via agency</th><th>Lag</th></tr><tr><td>2026-09</td><td>68</td><td>$5,496.85</td><td>$0.00</td><td>$785.30</td><td>$25.63</td><td>$0.00</td><td>$0.00</td><td>$0.00</td><td>—</td><td>—</td></tr><tr><td>2026-08</td><td>84</td><td>$6,666.01</td><td>$810.66</td><td>$62.15</td><td>$55.17</td><td>$378.68</td><td>$431.98</td><td>$0.00</td><td>0%</td><td>19</td></tr><tr><td>2026-07</td><td>80</td><td>$6,119.60</td><td>$897.39</td><td>$0.00</td><td>$9.88</td><td>$357.96</td><td>$539.43</td><td>$0.00</td><td>0%</td><td>19</td></tr><tr><td>2026-06</td><td>84</td><td>$6,768.12</td><td>$882.26</td><td>$0.00</td><td>$60.15</td><td>$357.13</td><td>$525.13</td><td>$0.00</td><td>0%</td><td>19</td></tr><tr><td>2026-05</td><td>87</td><td>$6,959.88</td><td>$914.13</td><td>$0.00</td><td>$29.45</td><td>$425.45</td><td>$488.68</td><td>$0.00</td><td>0%</td><td>19</td></tr><tr><td>2026-04</td><td>99</td><td>$8,090.79</td><td>$1,150.44</td><td>$0.00</td><td>$63.71</td><td>$644.46</td><td>$505.98</td><td>$0.00</td><td>0%</td><td>19</td></tr><tr><td>2026-03</td><td>80</td><td>$6,453.64</td><td>$904.06</td><td>$0.00</td><td>$23.98</td><td>$292.39</td><td>$611.67</td><td>$0.00</td><td>0%</td><td>19</td></tr><tr class="total"><td>All</td><td>582</td><td>$46,554.89</td><td>$5,558.94</td><td></td><td></td><td>$2,456.07</td><td>$3,102.87</td><td>$0.00</td><td></td><td></td></tr></table></div><h2 class="inc">Who it depends on</h2><p class="inc-note">Your top shop is <b>10%</b> of everything settled; the top three are 19% and the top ten 44%. 33 shops have ever paid you; 30 paid $100 or more and 0 paid $1,000 or more.</p><div class="inc-wrap"><table class="inc"><tr><th>Shop</th><th>Settled</th><th>Share</th><th>Orders</th><th>First</th><th>Last</th><th>Months since</th></tr><tr><td>Lumen Skin</td><td>$540.85</td><td>10%</td><td>52</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Copperleaf Candles</td><td>$296.31</td><td>5%</td><td>22</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Cascade Labs</td><td>$238.53</td><td>4%</td><td>18</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Pinegate Pets</td><td>$215.99</td><td>4%</td><td>21</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Cloudpeak Luggage</td><td>$213.21</td><td>4%</td><td>19</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Kestrel Athletics</td><td>$203.65</td><td>4%</td><td>20</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Verdant Botanics</td><td>$193.78</td><td>3%</td><td>21</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Hearth Kitchen</td><td>$187.95</td><td>3%</td><td>22</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Lanternhouse</td><td>$183.83</td><td>3%</td><td>18</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Saltmarsh Swim</td><td>$178.02</td><td>3%</td><td>18</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Harbour Coffee</td><td>$172.75</td><td>3%</td><td>18</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Orchard Lane</td><td>$169.73</td><td>3%</td><td>17</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Paws &amp; Claws</td><td>$169.42</td><td>3%</td><td>14</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Rill &amp; Vane Casting</td><td>$161.13</td><td>3%</td><td>14</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Orderly</td><td>$158.04</td><td>3%</td><td>18</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Velvet Hour</td><td>$153.00</td><td>3%</td><td>18</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Maple &amp; Oak</td><td>$152.06</td><td>3%</td><td>16</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Tinsel Toys</td><td>$151.48</td><td>3%</td><td>15</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Driftwood Decor</td><td>$144.49</td><td>3%</td><td>15</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Summit Supplements</td><td>$144.02</td><td>3%</td><td>15</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Brookside Baby</td><td>$143.31</td><td>3%</td><td>19</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Northwind Outdoors</td><td>$138.33</td><td>2%</td><td>13</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Winterbourne &amp; Co</td><td>$132.27</td><td>2%</td><td>21</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Marlow Denim</td><td>$130.41</td><td>2%</td><td>13</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>Nimbus Audio</td><td>$125.87</td><td>2%</td><td>12</td><td>2026-03</td><td>2026-08</td><td>1</td></tr><tr><td>8 other shops</td><td>$860.51</td><td>15%</td><td></td><td></td><td></td><td></td></tr></table></div><div class="inc-wrap"><table class="inc"><tr><th>Month</th><th>Shops that paid</th><th>New</th><th>Returning</th></tr><tr><td>2026-08</td><td>32</td><td>0</td><td>32</td></tr><tr><td>2026-07</td><td>33</td><td>0</td><td>33</td></tr><tr><td>2026-06</td><td>32</td><td>0</td><td>32</td></tr><tr><td>2026-05</td><td>33</td><td>0</td><td>33</td></tr><tr><td>2026-04</td><td>32</td><td>0</td><td>32</td></tr><tr><td>2026-03</td><td>33</td><td>33</td><td>0</td></tr></table></div><h2 class="inc">LIVE, by the hour</h2><p class="inc-note">29 streams, 67.3 hours, $2,456.07 settled on them (29 of them sold something). Times are as TikTok exported them. $0.00 of LIVE commission came from rooms that are not in this export.</p><div class="inc-wrap"><table class="inc"><tr><th>Month</th><th>Streams</th><th>Hours</th><th>Commission</th><th>Per hour</th><th>GMV</th><th>GMV per hour</th><th>Views per stream</th><th>No sale</th></tr><tr><td>2026-09</td><td>4</td><td>9.2</td><td>$0.00</td><td>$0.00</td><td>$3,821.81</td><td>$416.17</td><td>2,964</td><td>0</td></tr><tr><td>2026-08</td><td>5</td><td>12.4</td><td>$378.68</td><td>$30.50</td><td>$3,043.16</td><td>$245.09</td><td>1,985</td><td>0</td></tr><tr><td>2026-07</td><td>5</td><td>14.4</td><td>$357.96</td><td>$24.89</td><td>$2,518.67</td><td>$175.11</td><td>1,385</td><td>0</td></tr><tr><td>2026-06</td><td>5</td><td>10.1</td><td>$357.13</td><td>$35.30</td><td>$2,775.17</td><td>$274.32</td><td>3,127</td><td>0</td></tr><tr><td>2026-05</td><td>4</td><td>7.9</td><td>$425.45</td><td>$53.97</td><td>$3,250.65</td><td>$412.34</td><td>1,442</td><td>0</td></tr><tr><td>2026-04</td><td>3</td><td>5.8</td><td>$644.46</td><td>$110.48</td><td>$4,538.02</td><td>$777.95</td><td>2,416</td><td>0</td></tr><tr><td>2026-03</td><td>3</td><td>7.5</td><td>$292.39</td><td>$38.99</td><td>$2,309.99</td><td>$308.00</td><td>2,841</td><td>0</td></tr></table></div><div class="inc-wrap"><table class="inc"><tr><th>Stream length</th><th>Streams</th><th>Median commission</th><th>Per hour</th></tr><tr><td>up to 1 h</td><td>1</td><td>$117.26</td><td>$123.43</td></tr><tr><td>1–2 h</td><td>10</td><td>$98.78</td><td>$64.27</td></tr><tr><td>over 2 h</td><td>18</td><td>$68.70</td><td>$26.47</td></tr></table></div><div class="inc-wrap"><table class="inc"><tr><th>Start hour</th><th>Streams</th><th>Median commission</th></tr><tr><td>10:00</td><td>4</td><td>$76.79</td></tr><tr><td>11:00</td><td>1</td><td>$0.00</td></tr><tr><td>12:00</td><td>3</td><td>$68.97</td></tr><tr><td>13:00</td><td>4</td><td>$80.05</td></tr><tr><td>14:00</td><td>2</td><td>$146.49</td></tr><tr><td>15:00</td><td>1</td><td>$0.00</td></tr><tr><td>16:00</td><td>4</td><td>$79.75</td></tr><tr><td>17:00</td><td>1</td><td>$103.66</td></tr><tr><td>18:00</td><td>5</td><td>$98.37</td></tr><tr><td>19:00</td><td>1</td><td>$78.95</td></tr><tr><td>20:00</td><td>1</td><td>$45.58</td></tr><tr><td>21:00</td><td>2</td><td>$105.46</td></tr></table></div><p class="inc-note">Your last 29 streams.</p><div class="inc-wrap"><table class="inc"><tr><th>Start</th><th>Minutes</th><th>Views</th><th>Orders</th><th>Commission</th><th>GMV</th></tr><tr><td>2026-09-14 21:00</td><td>81</td><td>3,878</td><td>15</td><td>$0.00</td><td>$1,175.17</td></tr><tr><td>2026-09-13 15:00</td><td>126</td><td>2,411</td><td>12</td><td>$0.00</td><td>$921.73</td></tr><tr><td>2026-09-13 11:00</td><td>144</td><td>3,316</td><td>9</td><td>$0.00</td><td>$781.80</td></tr><tr><td>2026-09-01 12:00</td><td>200</td><td>2,252</td><td>9</td><td>$0.00</td><td>$943.11</td></tr><tr><td>2026-08-12 13:00</td><td>106</td><td>436</td><td>5</td><td>$45.64</td><td>$365.22</td></tr><tr><td>2026-08-11 12:00</td><td>139</td><td>758</td><td>9</td><td>$94.79</td><td>$756.90</td></tr><tr><td>2026-08-07 16:00</td><td>153</td><td>2,246</td><td>7</td><td>$66.83</td><td>$585.31</td></tr><tr><td>2026-08-06 13:00</td><td>199</td><td>2,580</td><td>10</td><td>$116.79</td><td>$840.17</td></tr><tr><td>2026-08-04 18:00</td><td>148</td><td>3,907</td><td>6</td><td>$54.63</td><td>$495.56</td></tr><tr><td>2026-07-24 10:00</td><td>184</td><td>1,376</td><td>8</td><td>$85.14</td><td>$585.23</td></tr><tr><td>2026-07-15 18:00</td><td>190</td><td>1,107</td><td>11</td><td>$124.78</td><td>$746.34</td></tr><tr><td>2026-07-15 10:00</td><td>175</td><td>738</td><td>3</td><td>$12.86</td><td>$107.56</td></tr><tr><td>2026-07-14 18:00</td><td>118</td><td>1,322</td><td>8</td><td>$98.37</td><td>$719.95</td></tr><tr><td>2026-07-03 16:00</td><td>196</td><td>2,386</td><td>5</td><td>$36.81</td><td>$359.59</td></tr><tr><td>2026-06-18 18:00</td><td>57</td><td>1,832</td><td>11</td><td>$117.26</td><td>$912.70</td></tr><tr><td>2026-06-13 20:00</td><td>186</td><td>3,827</td><td>6</td><td>$45.58</td><td>$346.84</td></tr><tr><td>2026-06-11 12:00</td><td>126</td><td>3,121</td><td>6</td><td>$68.97</td><td>$505.06</td></tr><tr><td>2026-06-07 19:00</td><td>171</td><td>3,443</td><td>9</td><td>$78.95</td><td>$593.36</td></tr><tr><td>2026-06-05 18:00</td><td>67</td><td>3,412</td><td>5</td><td>$46.37</td><td>$417.21</td></tr><tr><td>2026-05-20 17:00</td><td>105</td><td>1,506</td><td>11</td><td>$103.66</td><td>$819.24</td></tr><tr><td>2026-05-20 13:00</td><td>161</td><td>788</td><td>8</td><td>$88.45</td><td>$660.70</td></tr><tr><td>2026-05-17 16:00</td><td>98</td><td>2,624</td><td>9</td><td>$92.67</td><td>$642.04</td></tr><tr><td>2026-05-03 14:00</td><td>109</td><td>850</td><td>12</td><td>$140.67</td><td>$1,128.67</td></tr><tr><td>2026-04-24 16:00</td><td>109</td><td>3,514</td><td>9</td><td>$99.19</td><td>$695.17</td></tr><tr><td>2026-04-18 10:00</td><td>179</td><td>470</td><td>27</td><td>$334.35</td><td>$2,412.03</td></tr><tr><td>2026-04-15 21:00</td><td>62</td><td>3,264</td><td>16</td><td>$210.92</td><td>$1,430.82</td></tr><tr><td>2026-03-19 13:00</td><td>188</td><td>3,542</td><td>9</td><td>$71.65</td><td>$756.51</td></tr><tr><td>2026-03-07 14:00</td><td>69</td><td>2,443</td><td>12</td><td>$152.30</td><td>$1,006.00</td></tr><tr><td>2026-03-06 10:00</td><td>193</td><td>2,539</td><td>9</td><td>$68.44</td><td>$547.48</td></tr></table></div><p class="inc-note">Report run 2026-09-16T02:21:30+00:00. Orders 2026-03-01 → 2026-09-15 (582 rows). </p></main>
