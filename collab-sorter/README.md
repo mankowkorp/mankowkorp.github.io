@@ -6,7 +6,7 @@
 ## What this page claims
 
 - Ranks more than 100 collaboration offers a week for one person, who uses it daily.
-- Holds three separate Gmail permissions: read-only for the daily check, modify
+- Holds three separate Gmail permissions: read-only for the check every 15 minutes, modify
   used when she presses a button, and send only for a reply she has confirmed.
   Never the full-mailbox permission.
 - Runs on a personal machine. No server, no account system. Message text is kept
